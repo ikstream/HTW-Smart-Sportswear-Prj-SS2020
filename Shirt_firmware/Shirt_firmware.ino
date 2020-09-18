@@ -52,9 +52,6 @@ static void read_heart_rate(void)
 {
   pinMode(HEART_RATE_SENSOR, INPUT);
   int cur_time = millis();
-  //int randNumber = random(50, 200);
-  //payload.concat(randNumber);
-  //payload.concat(":");
 
   // read heart rate
   if ((digitalRead(LO_PLUS) == 1) || (digitalRead(LO_MINUS) == 1))
