@@ -34,7 +34,7 @@ int heart_time;
 boolean belowThreshold = true;
 String payload;
 int test_bpm = 0;
-float threshold = 10.0;
+float threshold = 725.0;
 
 
 unsigned int average_value[60];
@@ -42,10 +42,31 @@ int i = 0;
 long lastDebounceTime = 0;
 long debounceDelay = 300;
 
-static void calculateBPM ()
+static void fake_heart_rate(void)
 {
-  BPM = test_bpm * 4;
-  test_bpm = 0;
+  int cur_time = millis();
+  int heart_diff = cur_time - heart_time;
+  if (heart_diff < 120000)
+  {
+    BPM = random(1, 3);
+  }
+  else if (heart_diff < 180000)
+  {
+    BPM = random(2, 4);
+  }
+  else if (heart_diff < 240000)
+  {
+    BPM = random(2, 5);
+  }
+  
+  else if (heart_diff < 360000)
+  {
+    BPM = random(1, 4);
+  }
+  else
+  {
+    BPM = random(1, 3);
+  }
 }
 
 static void read_heart_rate(void)
@@ -64,7 +85,7 @@ static void read_heart_rate(void)
 
     if (heart_rate > threshold && belowThreshold == true)
     {
-      test_bpm++;
+      BPM++;
 
       belowThreshold = false;
     }
@@ -72,12 +93,6 @@ static void read_heart_rate(void)
     {
       belowThreshold = true;
     }
-  }
-  if ((cur_time - heart_time) >= 15000)
-  {
-    Serial.println("Going to BPM calc");
-    calculateBPM();
-    heart_time = cur_time;
   }
 }
 
@@ -87,6 +102,7 @@ static void send_data(void)
   //Serial.println(payload);
   if ((cur_time - send_time) >= 1000)
   {
+    //fake_heart_rate();
     payload = "";
     payload.concat(BPM);
     payload.concat(":");
@@ -96,6 +112,7 @@ static void send_data(void)
     SerialBT.println(payload);
     Serial.println(payload);
     send_time = cur_time;
+    BPM = 0;
   }
 }
 
