@@ -59,6 +59,10 @@ static void fake_heart_rate(void)
   {
     BPM = random(1, 4);
   }
+  else if (heart_diff >= 500000)
+  {
+    heart_time = cur_time;
+  }
   else
   {
     BPM = random(1, 3);
