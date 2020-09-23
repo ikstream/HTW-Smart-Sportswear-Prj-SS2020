@@ -25,15 +25,11 @@ BluetoothSerial SerialBT;
 
 int heart_rate = 0;
 int BPM = 0;
-int beat_old = 0;
-float beats[500];  // Used to calculate average BPM
-int beatIndex;
 int send_time;
 int gps_time;
 int heart_time;
 boolean belowThreshold = true;
 String payload;
-int test_bpm = 0;
 float threshold = 725.0;
 
 
